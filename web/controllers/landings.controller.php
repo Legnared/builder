@@ -16,11 +16,11 @@ class LandingsController{
              loading de carga para visualizar que se se esta creando  =
             =========================================================*/
              echo '<script>
-                 //fncMatPreloader("om");
-                 //fncSweetAlert("loading", "Gestionando registro...", "");
+                 fncMatPreloader("on");
+                 fncSweetAlert("loading", "Gestionando registro...", "");
              </script>';
 
-             return;
+            
             /*========================================================
             =               Agrupar varios Item para BD                 =
             =========================================================*/
@@ -59,31 +59,42 @@ class LandingsController{
             );
 
             $save = CurlController::request($url,$method,$fields);
-            if ($save->status == 200) {
-                
-                echo '<script>
 
+            if($save->status == 200){
+
+                $url = "codes?token=".$_SESSION["admin"]->token_admin."&table=admins&suffix=admin";
+                $method = "POST";
+                $fields = array(
+                    "id_landing_code" => $save->results->lastId,
+                    "date_created_code" => date("Y-m-d")
+                );
+
+                $createCode = CurlController::request($url,$method,$fields);
+
+                if($createCode->status == 200){
+
+                    echo '<script>
                     
+                    fncMatPreloader("off");
                     fncFormatInputs();
-                    fncSweetAlert("success", "Registro Guardado con éxito", "/");
-                       // fncMatPreloader("off");
-                    //fncToastr("success", "Registro Guardado con éxito");
-                
-                </script>';
+                    fncSweetAlert("success", "Registro guardado con éxito", "/");
 
-            } else {
+                    </script>';
+
+                }
+
+            }else{
+
                 echo '<script>
 
-                    //fncMatPreloader("off");
-                    fncFormatInputs();
-                    fncSweetAlert("error", "Error al Guardar el registro", "/")
-                
+                fncMatPreloader("off");
+                fncFormatInputs();
+                fncSweetAlert("error", "Error al guardar el registro", "/");
+
                 </script>';
             }
 
         }
         
     }
-
-
 }

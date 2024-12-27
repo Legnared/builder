@@ -14,11 +14,26 @@ session_start();
 $routesArray = explode('/', $_SERVER['REQUEST_URI']);
 array_shift($routesArray);
 
-
-
 foreach ($routesArray as $key => $value){
     $routesArray[$key] = explode ("?",$value)[0];
 }
+
+
+/*  
+==========================================  
+Validar si viene Landing con códigos  
+==========================================  
+*/  
+
+if (isset($routesArray[0]) && $routesArray[0] == "code" && isset($routesArray[1])) {  
+    $url = "relations?rel=codes,landings&type=code,landing&linkTo=url_landing&equalTo=" . $routesArray[1];  
+    $method = "GET";  
+    $fields = array();  
+    
+    $code = CurlController::request($url, $method, $fields);  
+    echo '<pre>'; print_r($code); echo '</pre>';
+}
+
 
 ?>
 
@@ -34,13 +49,26 @@ foreach ($routesArray as $key => $value){
 
     <link href="/views/assets/plugins/material-preloader/material-preloader.css" rel="stylesheet" >
     <link href="/views/assets/plugins/toastr/toastr.min.css" rel="stylesheet" >
+    <link href="/views/assets/plugins/jquery-ui/jquery-ui.css" rel="stylesheet">
+
+    <link href="/views/assets/plugins/codemirror/codemirror.min.css" rel="stylesheet">
+    <link href="/views/assets/plugins/codemirror/custom-codemirror.css" rel="stylesheet">
+
+    <!-- https://fontawesome.com/v5/search -->
+	<link rel="stylesheet" href="/views/assets/plugins/fontawesome-free/css/all.min.css"> 
+
     <link href="/views/assets/css/dashboard/dashboard.css" rel="stylesheet">
+
     <link href="/views/assets/css/template/template.css" rel="stylesheet">
+
+
 
     <script src="/views/assets/js/alerts/alerts.js"></script>
     
     <!-- jQuery library -->
     <script src="/views/assets/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery library UI -->
+    <script src="/views/assets/plugins/jquery-ui/jquery-ui.js"></script>
 
     <!-- Bootstrap library -->
     <script src="/views/assets/plugins/bootstrap5/bootstrap.bundle.min.js"></script>
@@ -56,6 +84,15 @@ foreach ($routesArray as $key => $value){
 
     <!-- https://materializecss.com/preloader.html -->
     <script src="/views/assets/plugins/material-preloader/material-preloader.js"></script>
+
+    <!-- https://codemirror.net/docs/ -->
+    <script src="/views/assets/plugins/codemirror/codemirror.min.js"></script>
+    <script src="/views/assets/plugins/codemirror/javascript.min.js"></script>
+    <script src="/views/assets/plugins/codemirror/css.min.js"></script>
+    <script src="/views/assets/plugins/codemirror/xml.min.js"></script>
+    <script src="/views/assets/plugins/codemirror/active-line.js"></script>
+    <script src="/views/assets/plugins/codemirror/matchbrackets.min.js"></script>
+    <script src="/views/assets/plugins/codemirror/autorefresh.js"></script>
 
 </head>
 
@@ -77,7 +114,7 @@ foreach ($routesArray as $key => $value){
                    if (!empty($routesArray[0])){
 
 
-                    if($routesArray[0] == "login" || $routesArray[0] == "logout"){
+                    if($routesArray[0] == "login" || $routesArray[0] == "logout" || $routesArray[0] == "code"){
 
                         include "pages/".$routesArray[0]."/".$routesArray[0].".php";
 

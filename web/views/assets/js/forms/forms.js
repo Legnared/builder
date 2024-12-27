@@ -17,6 +17,53 @@
     }, false);
   })();
 
+/*========================================================
+=                FUNCION PARA VALIDAR DATOS REPETIDOS        =
+=========================================================*/
+
+function validateDataRepeat(event, type){
+
+  if (type == "landing") {
+
+    var table = "landings";
+    var linkTo = "title_landing"
+
+  }
+
+  var value = event.target.value;
+
+  var data = new FormData();
+  data.append("table", table);
+  data.append("equalTo", value);
+  data.append("linkTo", linkTo);
+
+  $.ajax({
+      url: "/ajax/forms.ajax.php",
+      method: "POST",
+      data: data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(response) {
+          // Convierte la respuesta a JSON
+          response = JSON.parse(response);
+
+          if (response.status != 200) {
+              if (type == "landing") {
+                  validateJS(event, "text");
+              }
+          } else {
+              $(event.target).parent().addClass("was-validated");
+              $(event.target).parent().children(".invalid-feedback").html("Este Registro ya existe en la base de datos");
+
+              event.target.value = "";
+              return;
+          }
+      }
+  });
+
+
+}
   
 /*========================================================
 =                FUNCION PARA VALIDAR FORMULARIOS        =

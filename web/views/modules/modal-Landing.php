@@ -23,7 +23,7 @@
                         name="title_landing" 
                         id="title_landing"
                         placeholder="Ingrese el título de la página"
-                        onchange="validateJS(event, 'text')"
+                        onchange="validateDataRepeat(event, 'landing')"
                         required>
 
                         <div class="valid-feedback">Válido.</div>

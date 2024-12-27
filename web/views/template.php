@@ -31,15 +31,31 @@ foreach ($routesArray as $key => $value){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page | Builder</title>
     <link href="/views/assets/plugins/bootstrap5/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/views/assets/plugins/material-preloader/material-preloader.css" rel="stylesheet" >
+    <link href="/views/assets/plugins/toastr/toastr.min.css" rel="stylesheet" >
     <link href="/views/assets/css/dashboard/dashboard.css" rel="stylesheet">
     <link href="/views/assets/css/template/template.css" rel="stylesheet">
+
+    <script src="/views/assets/js/alerts/alerts.js"></script>
     
     <!-- jQuery library -->
-    <script src="/views/assets/plugins/jquery/jquery.slim.min.js"></script>
+    <script src="/views/assets/plugins/jquery/jquery.min.js"></script>
+
     <!-- Bootstrap library -->
     <script src="/views/assets/plugins/bootstrap5/bootstrap.bundle.min.js"></script>
+
     <!-- https://feathericons.com/ -->
     <script src="/views/assets/plugins/feathericons/feather.min.js"></script>
+
+    <!-- https://cdn.jsdelivr.net/npm/sweetalert2@11 -->
+    <script src="/views/assets/plugins/sweetalert/sweetalert.js"></script>
+
+    <!-- https://codeseven.github.io/toastr/demo.html -->
+    <script src="/views/assets/plugins/toastr/toastr.min.js"></script>
+
+    <!-- https://materializecss.com/preloader.html -->
+    <script src="/views/assets/plugins/material-preloader/material-preloader.js"></script>
 
 </head>
 

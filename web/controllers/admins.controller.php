@@ -25,6 +25,7 @@ class AdminsController{
 
                echo '<script>
 
+               localStorage.setItem("token-admin", "'.$login->results[0]->token_admin.'");
                window.location = "/";
                
                </script>';

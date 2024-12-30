@@ -26,12 +26,31 @@ Validar si viene Landing con códigos
 */  
 
 if (isset($routesArray[0]) && $routesArray[0] == "code" && isset($routesArray[1])) {  
-    $url = "relations?rel=codes,landings&type=code,landing&linkTo=url_landing&equalTo=" . $routesArray[1];  
+
+    $select = "id_code,id_landing,html_code,css_code,javascript_code";
+
+    $url = "relations?rel=codes,landings&type=code,landing&linkTo=url_landing&equalTo=" . $routesArray[1].
+    "&select=".$select;  
     $method = "GET";  
     $fields = array();  
     
     $code = CurlController::request($url, $method, $fields);  
-    echo '<pre>'; print_r($code); echo '</pre>';
+
+    if ($code->status == 200) {
+
+        $code = $code->results[0];
+
+    } else {
+
+        echo '<script>
+             
+            window.location = "/";
+        
+        </script>';
+
+    }
+
+    //echo '<pre>'; print_r($code); echo '</pre>';
 }
 
 

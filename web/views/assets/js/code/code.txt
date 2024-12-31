@@ -27,7 +27,7 @@ if ($(".codemirror").length > 0) {
 
     classCodemirror.each((i) => {  
         var typeCode = "text/plain"; // Valor predeterminado
-
+       
         if ($(classCodemirror[i]).attr("code") == "html") {
             typeCode = "text/html";
         }
@@ -66,24 +66,22 @@ if ($(".codemirror").length > 0) {
             // Manejo opcional del evento, si es necesario
         }, { passive: true }); // Marca el evento como pasivo
 
+
         // Evento para detectar cambios en el editor
         editor.on("change", function(event) {
+
             $(".saveLanding").html(`<span class="spinner-border spinner-border-sm text-muted"></span> Guardando`);
 
             var codeEditor = event.getValue(); // Obtén el valor del editor
-            // console.log("codeEditor", codeEditor);
+            //console.log("codeEditor", codeEditor);
+            
 
-            updateCode(
-                $(classCodemirror[i]).attr("idCode"), 
-                codeEditor, 
-                $(classCodemirror[i]).attr("column")
-            );
+            updateCode($(classCodemirror[i]).attr("idCode"), codeEditor, $(classCodemirror[i]).attr("column"));
 
-            // console.log("codeEditor:", codeEditor);
+            //console.log("codeEditor:", codeEditor);
         });
     });
 }
-
 
 
 /*=============================================================================  
@@ -105,17 +103,34 @@ function updateCode(idCode, codeEditor, column) {
         cache: false,
         processData: false,
         success: function(response) {
-
-            if (response == 200) {
-                
-                $(".saveLanding").html(`<i class="fas fa-save"></i> Autoguardado <i class="fas fa-check"></i>`);
-
+            try {
+                // Intentar parsear la respuesta como JSON
+                if (typeof response === "string") {
+                    response = JSON.parse(response);
+                }
+    
+                // Validar el estado de la respuesta
+                if (response.status === "success") {
+                    $(".saveLanding").html(`<i class="fas fa-save"></i> Autoguardado <i class="fas fa-check"></i>`);
+                    setTimeout(() => {
+                        $(".saveLanding").html(`<i class="fas fa-save"></i> Guardar`);
+                    }, 2000);
+                } else {
+                    // Manejo de errores específicos del servidor
+                    console.error("Error en el servidor:", response.message || "Error desconocido");
+                    $(".saveLanding").html(`<i class="fas fa-exclamation-circle"></i> ${response.message || "Error al guardar"}`);
+                }
+            } catch (error) {
+                // Manejar errores al intentar parsear la respuesta
+                console.error("Error al parsear la respuesta:", error, response);
+                $(".saveLanding").html(`<i class="fas fa-exclamation-circle"></i> Respuesta no válida del servidor`);
             }
-            //console.log("response:", response);
-
-            
+        },
+        error: function(status, error) {
+            // Manejo de errores de red o problemas con la solicitud
+            console.error("Error en la solicitud:", status, error);
+            $(".saveLanding").html(`<i class="fas fa-exclamation-circle"></i> Error al guardar`);
         }
-            
     });
     
 }

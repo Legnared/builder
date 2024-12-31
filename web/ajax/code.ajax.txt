@@ -1,6 +1,7 @@
 <?php
 
-
+//file_put_contents('debug_code_ajax.log', print_r($_POST, true) . "\n", FILE_APPEND);
+header('Content-Type: application/json; charset=utf-8');
 require_once "../controllers/curl.controller.php";
 
 class CodeController {
@@ -14,8 +15,8 @@ class CodeController {
         // Validación de entradas
         $this->idCode = filter_var($this->idCode, FILTER_SANITIZE_NUMBER_INT);
         $this->codeEditor = $this->codeEditor;
-        $this->column = $this->column;
-        $this->token = $this->token;
+        $this->column = filter_var($this->column, FILTER_SANITIZE_STRING);
+        $this->token = filter_var($this->token, FILTER_SANITIZE_STRING);
 
         // Construcción de la URL
         $url = "codes?id=" . $this->idCode . "&nameId=id_code&token=" . $this->token . "&table=admins&suffix=admin";
@@ -29,7 +30,31 @@ class CodeController {
         // Solicitud cURL
         $data = CurlController::request($url, $method, $fields);
 
-        echo $data->status;
+        if ($data === null || !isset($data->status)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "La respuesta del servidor no es válida.",
+                "data" => $data
+            ]);
+            file_put_contents('debug_code_ajax.log', "Respuesta no válida: " . print_r($data, true) . "\n", FILE_APPEND);
+            return;
+        }
+
+
+        if ($data->status !== 'success') {
+            echo json_encode([
+                "status" => "error",
+                "message" => "El servidor devolvió un estado de error.",
+                "serverStatus" => $data->status
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "El servidor procesó la solicitud correctamente.",
+            "serverStatus" => $data->status
+        ]);
     }
 }
 

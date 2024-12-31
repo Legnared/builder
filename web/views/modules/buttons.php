@@ -15,9 +15,7 @@
             <i class="fas fa-save"></i> Autoguardado <i class="fas fa-check"></i>
         </button>
     </div>
-
-
-
+    
     <div class="btn-toolbar mb-2 mb-md-0">
 
         <a href="/" class="btn btn-sm btn-outline-secondary mb-2 me-2"> <span
@@ -28,7 +26,7 @@
                 <i class="fas fa-tools"></i>
                 Configuración
             </button>
-            <a href="/" class="btn btn-sm btn-outline-secondary mb-2 me-2">
+            <a href="/<?php echo $code->url_landing; ?>" target="_blank" class="btn btn-sm btn-outline-secondary mb-2 me-2">
                 <span data-feather="maximize"></span>
                 Previausalizar
             </a>
